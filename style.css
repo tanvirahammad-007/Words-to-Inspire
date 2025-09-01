@@ -21,6 +21,7 @@ body {
   justify-content: center;
   background: linear-gradient(to top left, #2898b4, #fffa9e, #837aff);
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* h2 {
@@ -97,4 +98,5 @@ p {
   z-index: 5;
 
 }
+
 
