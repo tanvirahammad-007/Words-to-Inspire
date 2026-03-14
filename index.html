@@ -1,32 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="style.css" />
     <title>Words to Inspire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- <h2>Welcome to Words to Inspire 💀 </h2> -->
-    <button class="show-modal btn1">Motivational Quota 💪</button>
-    <button class="show-modal btn2">Funny Joke 😂</button>
-    <button class="show-modal btn3">Dark Humor 🩻</button>
 
-    <div class="modal hidden">
-      <button class="close-modal">&times;</button>
-      <h1>Hello there...✌️</h1>
-      <p class="quotas">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </p>
+    <!-- CANVAS FOR PARTICLES -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">Inspire</span>
+        </div>
+        <nav class="header-nav">
+          <a href="#words" class="nav-link">Words</a>
+          <a href="#quotes" class="nav-link">Quotes</a>
+          <a href="#favorites" class="nav-link">Favorites</a>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span class="theme-icon">☀️</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-eyebrow">Daily wisdom for your journey</p>
+        <h1 class="hero-title">
+          <span class="typing-line" id="typingText"></span><span class="cursor">|</span>
+        </h1>
+        <p class="hero-sub">Discover words that move you. Save them. Share them.</p>
+        <a href="#words" class="hero-cta">
+          <span>Explore Words</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="hero-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+    </section>
+
+    <!-- QUOTE OF THE MOMENT -->
+    <section id="quotes" class="quote-section">
+      <div class="container">
+        <div class="quote-card glass reveal">
+          <div class="quote-label">✦ Quote of the Moment</div>
+          <blockquote class="quote-text" id="quoteText">
+            "Push yourself, because no one else is going to do it for you."
+          </blockquote>
+          <div class="quote-actions">
+            <button class="btn-refresh" id="refreshQuote">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 2.5A6.5 6.5 0 1 1 7 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13.5 2.5V6h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              New Quote
+            </button>
+            <button class="btn-share-quote" id="shareQuoteBtn">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="12" cy="3" r="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="4" cy="8" r="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 7l5-3M5.5 9l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Share
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORDS SECTION -->
+    <section id="words" class="words-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 class="section-title">Words That Move</h2>
+          <p class="section-sub">Each word is a universe. Click to explore.</p>
+        </div>
+
+        <!-- SEARCH + FILTERS -->
+        <div class="controls reveal">
+          <div class="search-wrap">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search words..." autocomplete="off" />
+          </div>
+          <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-cat="all">All</button>
+            <button class="filter-tab" data-cat="Success">Success</button>
+            <button class="filter-tab" data-cat="Motivation">Motivation</button>
+            <button class="filter-tab" data-cat="Learning">Learning</button>
+            <button class="filter-tab" data-cat="Positivity">Positivity</button>
+            <button class="filter-tab" data-cat="Courage">Courage</button>
+          </div>
+        </div>
+
+        <!-- WORD GRID -->
+        <div class="word-grid" id="wordGrid"></div>
+
+        <p class="no-results hidden" id="noResults">No words found. Try a different search.</p>
+      </div>
+    </section>
+
+    <!-- FAVORITES SECTION -->
+    <section id="favorites" class="favorites-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 class="section-title">Your Favorites</h2>
+          <p class="section-sub">Words you've saved for your journey.</p>
+        </div>
+        <div class="word-grid" id="favGrid"></div>
+        <p class="no-results" id="noFavs">No favorites yet. Click ♡ on any word card to save it.</p>
+      </div>
+    </section>
+
+    <!-- WORD DETAIL MODAL -->
+    <div class="modal-overlay hidden" id="wordModal">
+      <div class="modal-box glass">
+        <button class="modal-close" id="modalClose">✕</button>
+        <div class="modal-word-label" id="modalCategory"></div>
+        <h2 class="modal-word" id="modalWord"></h2>
+        <p class="modal-meaning" id="modalMeaning"></p>
+        <blockquote class="modal-quote" id="modalQuote"></blockquote>
+        <div class="modal-share">
+          <span class="share-label">Share this word</span>
+          <div class="share-btns">
+            <button class="share-btn twitter" id="shareTwitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+              Twitter
+            </button>
+            <button class="share-btn facebook" id="shareFacebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              Facebook
+            </button>
+            <button class="share-btn whatsapp" id="shareWhatsapp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+              WhatsApp
+            </button>
+          </div>
+        </div>
+        <button class="btn-fav-modal" id="favModalBtn">♡ Save to Favorites</button>
+      </div>
     </div>
-    <div class="overlay hidden"></div>
+
+    <!-- SHARE QUOTE MODAL -->
+    <div class="modal-overlay hidden" id="shareModal">
+      <div class="modal-box glass share-modal-box">
+        <button class="modal-close" id="shareModalClose">✕</button>
+        <h3 class="share-modal-title">Share this Quote</h3>
+        <blockquote class="share-modal-quote" id="shareModalQuote"></blockquote>
+        <div class="share-btns">
+          <button class="share-btn twitter" id="sqTwitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>
+            Twitter
+          </button>
+          <button class="share-btn facebook" id="sqFacebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            Facebook
+          </button>
+          <button class="share-btn whatsapp" id="sqWhatsapp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast hidden" id="toast"></div>
+
+    <footer class="site-footer">
+      <p>Made with ✦ by <a href="https://github.com/tanvirahammad-007" target="_blank">Tanvir Ahammad</a></p>
+    </footer>
 
     <script src="script.js"></script>
   </body>
